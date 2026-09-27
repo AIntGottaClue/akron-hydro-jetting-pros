@@ -4,3 +4,5 @@
 /* Service links use the same tap-to-open submenu as the Fix & Flip navigation. */
 .navlinks__dropdown{position:relative}.navlinks__dropdown-trigger{border:0;background:none;color:var(--ink);font:700 14px 'DM Sans',sans-serif;cursor:pointer;padding:12px 0}.navlinks__dropdown-menu{display:none;position:absolute;top:100%;right:0;width:270px;max-height:min(75vh,680px);overflow:auto;background:#fff;box-shadow:0 12px 22px #132b3020;padding:12px;z-index:8}.navlinks__dropdown.open .navlinks__dropdown-menu{display:block}.navlinks__dropdown-menu a{display:block;padding:7px 4px}.navlinks__dropdown-menu a:hover{color:var(--teal)}
 @media(max-width:760px){.navlinks__dropdown-menu{position:static;width:100%;box-shadow:none;max-height:none;padding:8px 12px}.navlinks__dropdown-trigger{width:100%;text-align:left}}
+
+.footer-guides{display:flex;flex-direction:column;gap:8px;font-size:14px}.footer-guides strong{color:white;font:800 16px Manrope,sans-serif}.article>a{display:inline-block;margin:4px 18px 8px 0;font-weight:700}
