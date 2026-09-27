@@ -6,7 +6,25 @@ window.SITE_CONFIG = {
 };
 document.querySelectorAll('[data-phone]').forEach(el => { el.textContent = SITE_CONFIG.phoneDisplay; el.href = 'tel:' + SITE_CONFIG.phoneHref; el.setAttribute('aria-label', 'Call Topeka Hydro Jetting Pros at ' + SITE_CONFIG.phoneDisplay); });
 const menu = document.querySelector('[data-menu-button]');
-menu?.addEventListener('click', () => { const nav = document.querySelector('[data-nav]'); const open = nav.classList.toggle('open'); menu.setAttribute('aria-expanded', String(open)); });
+// Keep the existing links and branding; reuse the Fix & Flip three-line toggle and submenu.
+if (menu) { menu.setAttribute('aria-label', 'Toggle menu'); menu.innerHTML = '<span></span><span></span><span></span>'; }
+const serviceLinks = [['Severe Grease and Sludge','severe-grease-and-sludge'],['Tree Root Intrusions','tree-root-intrusions'],['Recurring Clogs and Slow Drains','recurring-clogs-and-slow-drains'],['Mineral and Scale Deposits','mineral-and-scale-deposits'],['Preventative Maintenance','preventative-maintenance']];
+const menuNav = document.querySelector('[data-nav]');
+if (menuNav) {
+ const area = document.createElement('div'); area.className = 'navlinks__dropdown';
+ const trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'navlinks__dropdown-trigger'; trigger.setAttribute('aria-expanded','false'); trigger.setAttribute('aria-controls','services-menu'); trigger.innerHTML = 'Service areas <span aria-hidden="true">⌄</span>';
+ const panel = document.createElement('div'); panel.className = 'navlinks__dropdown-menu'; panel.id = 'services-menu';
+ serviceLinks.forEach(([name,slug]) => { const a = document.createElement('a'); a.href = '/' + slug + '/'; a.textContent = name; panel.append(a); });
+ area.append(trigger,panel); menuNav.insertBefore(area,menuNav.lastElementChild);
+}
+
+const nav = document.querySelector('[data-nav]');
+const dropdown = document.querySelector('.navlinks__dropdown');
+const dropdownToggle = dropdown?.querySelector('button');
+menu?.addEventListener('click', () => { const open = nav.classList.toggle('open'); menu.setAttribute('aria-expanded', String(open)); if (!open) { dropdown?.classList.remove('open'); dropdownToggle?.setAttribute('aria-expanded', 'false'); } });
+dropdownToggle?.addEventListener('click', () => { const open = dropdown.classList.toggle('open'); dropdownToggle.setAttribute('aria-expanded', String(open)); });
+document.addEventListener('click', e => { if (dropdown && !dropdown.contains(e.target)) { dropdown.classList.remove('open'); dropdownToggle.setAttribute('aria-expanded', 'false'); } });
+nav?.addEventListener('click', e => { if (e.target.closest('a')) { nav.classList.remove('open'); menu?.setAttribute('aria-expanded', 'false'); } });
 document.querySelectorAll('[data-lead-form]').forEach(form => form.addEventListener('submit', async e => {
   e.preventDefault();
   const status = form.querySelector('[role="status"]');
