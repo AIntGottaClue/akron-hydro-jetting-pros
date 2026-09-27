@@ -29,7 +29,8 @@ if (menuNav) {
  const nbArea = document.createElement('div'); nbArea.className = 'navlinks__dropdown';
  const nbTrigger = document.createElement('button'); nbTrigger.type = 'button'; nbTrigger.className = 'navlinks__dropdown-trigger'; nbTrigger.setAttribute('aria-expanded','false'); nbTrigger.setAttribute('aria-controls','neighborhoods-menu'); nbTrigger.innerHTML = 'Neighborhoods <span aria-hidden="true">⌄</span>';
  const nbPanel = document.createElement('div'); nbPanel.className = 'navlinks__dropdown-menu'; nbPanel.id = 'neighborhoods-menu';
- neighborhoodLinks.forEach(([name,slug]) => { const a = document.createElement('a'); a.href = siteBase + slug + '/'; a.textContent = name; nbPanel.append(a); });
+ const nbBase = new URL('../', document.querySelector('script[src*="/assets/site.js"]').src).pathname;
+ neighborhoodLinks.forEach(([name,slug]) => { const a = document.createElement('a'); a.href = nbBase + slug + '/'; a.textContent = name; nbPanel.append(a); });
  nbArea.append(nbTrigger, nbPanel);
  const servicesDropdown = menuNav.querySelector('.navlinks__dropdown');
  if (servicesDropdown) { servicesDropdown.after(nbArea); } else { menuNav.insertBefore(nbArea, menuNav.lastElementChild); }
