@@ -1,6 +1,6 @@
 // Version the stylesheet so new navigation styles replace cached previews.
 const siteStyles = document.querySelector('link[rel="stylesheet"]');
-if (siteStyles) siteStyles.href = siteStyles.href.split('?')[0] + '?nav=20260927-3';
+if (siteStyles) siteStyles.href = siteStyles.href.split('?')[0] + '?nav=20260927-4';
 /* Replace these launch settings before publishing. */
 window.SITE_CONFIG = {
   phoneDisplay: '(877) 761-0283',
@@ -15,11 +15,13 @@ const serviceLinks = [['Severe Grease and Sludge','severe-grease-and-sludge'],['
 const menuNav = document.querySelector('[data-nav]');
 if (menuNav) {
  const area = document.createElement('div'); area.className = 'navlinks__dropdown';
- const trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'navlinks__dropdown-trigger'; trigger.setAttribute('aria-expanded','false'); trigger.setAttribute('aria-controls','services-menu'); trigger.innerHTML = 'Service areas <span aria-hidden="true">⌄</span>';
+ const trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'navlinks__dropdown-trigger'; trigger.setAttribute('aria-expanded','false'); trigger.setAttribute('aria-controls','services-menu'); trigger.innerHTML = 'Services <span aria-hidden="true">⌄</span>';
  const panel = document.createElement('div'); panel.className = 'navlinks__dropdown-menu'; panel.id = 'services-menu';
  const siteBase = new URL('../', document.querySelector('script[src*="/assets/site.js"]').src).pathname;
  serviceLinks.forEach(([name,slug]) => { const a = document.createElement('a'); a.href = siteBase + slug + '/'; a.textContent = name; panel.append(a); });
- area.append(trigger,panel); menuNav.insertBefore(area,menuNav.lastElementChild);
+ area.append(trigger,panel);
+ const servicesAnchor = menuNav.querySelector('a[href$="#services"]');
+ if (servicesAnchor) { menuNav.insertBefore(area, servicesAnchor); servicesAnchor.remove(); } else { menuNav.insertBefore(area, menuNav.lastElementChild); }
 }
 
 const nav = document.querySelector('[data-nav]');
@@ -41,4 +43,4 @@ document.querySelectorAll('[data-lead-form]').forEach(form => form.addEventListe
     status.textContent = 'Your request was sent.'; form.reset();
   } catch { status.textContent = 'The request could not be sent. Please call instead.'; }
   finally { button.disabled = false; }
-}));
+}));ipt
