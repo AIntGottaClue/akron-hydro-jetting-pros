@@ -43,4 +43,4 @@ document.querySelectorAll('[data-lead-form]').forEach(form => form.addEventListe
     status.textContent = 'Your request was sent.'; form.reset();
   } catch { status.textContent = 'The request could not be sent. Please call instead.'; }
   finally { button.disabled = false; }
-}));ipt
+}));
