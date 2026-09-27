@@ -1,5 +1,6 @@
 // Version the stylesheet so new navigation styles replace cached previews.
-document.querySelector('link[rel="stylesheet"]')?.setAttribute('href', '/assets/site.css?nav=20260927-2');
+const siteStyles = document.querySelector('link[rel="stylesheet"]');
+if (siteStyles) siteStyles.href = siteStyles.href.split('?')[0] + '?nav=20260927-3';
 /* Replace these launch settings before publishing. */
 window.SITE_CONFIG = {
   phoneDisplay: '(877) 761-0283',
