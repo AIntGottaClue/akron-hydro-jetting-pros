@@ -1,8 +1,10 @@
-name: Import project and deploy preview
+name: Build and deploy preview
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 concurrency:
@@ -16,30 +18,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-      - name: Unpack source into main
-        shell: bash
-        run: |
-          python3 - <<'PY'
-          import glob, os, shutil, subprocess, tempfile, zipfile
-          z=glob.glob('*.zip')[0]
-          with tempfile.TemporaryDirectory() as t:
-              with zipfile.ZipFile(z) as archive: archive.extractall(t)
-              root=os.path.join(t,os.listdir(t)[0])
-              for name in subprocess.check_output(['git','ls-files'],text=True).splitlines():
-                  if name.startswith('.github/') or name==z: continue
-                  if os.path.isfile(name): os.remove(name)
-              for name in os.listdir(root):
-                  if name in ['node_modules','.astro','dist','.git']: continue
-                  src=os.path.join(root,name)
-                  if os.path.isdir(name): shutil.rmtree(name)
-                  elif os.path.exists(name): os.remove(name)
-                  shutil.move(src,name)
-          PY
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A
-          git commit -m 'Import current site source' || true
-          git push origin HEAD:main
       - name: Build preview
         shell: bash
         run: |
@@ -51,6 +29,17 @@ jobs:
               s=open(p).read()
               s=re.sub(r"site: '[^']+'", "site: 'https://aintgottaclue.github.io'",s)
               s=s.replace("site: 'https://aintgottaclue.github.io',", "site: 'https://aintgottaclue.github.io',\n  base: '/"+repo+"/',")
+              open(p,'w').write(s)
+          if repo=='Biz-Directory-POC':
+              p='src/lib/router.tsx'
+              s=open(p).read()
+              s=s.replace("if (to !== '/' && !isCityContent(to)) return to;\n  return cityPath(cityForPath(currentPath).slug, to);", "const target = (to !== '/' && !isCityContent(to)) ? to : cityPath(cityForPath(currentPath).slug, to);\n  return '/Biz-Directory-POC' + target;")
+              open(p,'w').write(s)
+              p='src/components/Header.tsx'
+              s=open(p).read().replace("window.location.assign(cityPath(e.target.value as typeof city.slug))", "window.location.assign('/Biz-Directory-POC' + cityPath(e.target.value as typeof city.slug))")
+              open(p,'w').write(s)
+              p='src/views/NotFound.tsx'
+              s=open(p).read().replace('href="/"', 'href="/Biz-Directory-POC/"')
               open(p,'w').write(s)
           PY
           if [ -f package.json ]; then npm ci --ignore-scripts && npm run build; else mkdir -p dist; find . -mindepth 1 -maxdepth 1 ! -name .git ! -name .github ! -name dist ! -name '*.zip' -exec cp -a {} dist/ \;; fi
