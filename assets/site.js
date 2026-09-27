@@ -17,7 +17,8 @@ if (menuNav) {
  const area = document.createElement('div'); area.className = 'navlinks__dropdown';
  const trigger = document.createElement('button'); trigger.type = 'button'; trigger.className = 'navlinks__dropdown-trigger'; trigger.setAttribute('aria-expanded','false'); trigger.setAttribute('aria-controls','services-menu'); trigger.innerHTML = 'Service areas <span aria-hidden="true">⌄</span>';
  const panel = document.createElement('div'); panel.className = 'navlinks__dropdown-menu'; panel.id = 'services-menu';
- serviceLinks.forEach(([name,slug]) => { const a = document.createElement('a'); a.href = '/' + slug + '/'; a.textContent = name; panel.append(a); });
+ const siteBase = new URL('../', document.querySelector('script[src*="/assets/site.js"]').src).pathname;
+ serviceLinks.forEach(([name,slug]) => { const a = document.createElement('a'); a.href = siteBase + slug + '/'; a.textContent = name; panel.append(a); });
  area.append(trigger,panel); menuNav.insertBefore(area,menuNav.lastElementChild);
 }
 
