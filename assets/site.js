@@ -112,7 +112,7 @@ window.fetch = function(url,options) {
       const event=JSON.parse(options.body),data=event.formData || {};
       for (const [form,current] of activeLeads) {
         if (current.sent || event.type !== 'external_form_submission' ||
-            data.full_name !== current.name || data.phone !== current.phone || data.email !== current.email) continue;
+            data.full_name !== current.name || data.phone !== current.phone || (data.email || '') !== current.email) continue;
         current.sent=true;
         pending.then(response => response.clone().json().then(body => {
           if (activeLeads.get(form)!==current) return;
