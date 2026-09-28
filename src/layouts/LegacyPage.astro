@@ -1,0 +1,18 @@
+---
+import pages from '../data/pages.json';
+import { siteConfig } from '../data/siteConfig';
+const { slug } = Astro.props;
+const original = pages[slug as keyof typeof pages];
+if (!original) throw new Error(`Unknown page ${slug}`);
+// The existing page markup is preserved, including copy, SEO metadata, schema,
+// tracker order, form fields, nav structure and all CSS classes. Only per-site
+// values are resolved from the one config file during Astro's static build.
+const html = original.replace(/\{\{(GA4_ID|TRACKER_ID|BRAND|PHONE_DISPLAY|PHONE_HREF)\}\}/g, (_token, key) => ({
+  GA4_ID: siteConfig.ga4MeasurementId,
+  TRACKER_ID: siteConfig.airchattyTrackingId,
+  BRAND: siteConfig.brand,
+  PHONE_DISPLAY: siteConfig.phoneDisplay,
+  PHONE_HREF: siteConfig.phoneHref,
+}[key as 'GA4_ID' | 'TRACKER_ID' | 'BRAND' | 'PHONE_DISPLAY' | 'PHONE_HREF']));
+---
+<Fragment set:html={html} />
