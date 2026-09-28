@@ -15,7 +15,7 @@ if (menuNav) {
  if (servicesAnchor) { menuNav.insertBefore(area, servicesAnchor); servicesAnchor.remove(); } else { menuNav.insertBefore(area, menuNav.lastElementChild); }
 }
 
-const neighborhoodLinks = [['Potwin','potwin'],['College Hill','college-hill'],['Highland Park','highland-park'],['Westboro','westboro'],['Oakland','oakland'],['Hi-Crest','hi-crest']];
+const neighborhoodLinks = [["Goodyear Heights","goodyear-heights"],["Firestone Park","firestone-park"],["Middlebury","middlebury"],["North Hill","north-hill"]];
 if (menuNav) {
  const nbArea = document.createElement('div'); nbArea.className = 'navlinks__dropdown';
  const nbTrigger = document.createElement('button'); nbTrigger.type = 'button'; nbTrigger.className = 'navlinks__dropdown-trigger'; nbTrigger.setAttribute('aria-expanded','false'); nbTrigger.setAttribute('aria-controls','neighborhoods-menu'); nbTrigger.innerHTML = 'Neighborhoods <span aria-hidden="true">⌄</span>';
@@ -126,4 +126,3 @@ window.fetch = function(url,options) {
   } catch(err) { /* Leave the tracker undisturbed. */ }
   return pending;
 };
-
