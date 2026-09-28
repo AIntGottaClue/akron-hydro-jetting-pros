@@ -68,6 +68,24 @@ window.fetch = function (url, options) {
   } catch (err) { /* never break the page or the tracker */ }
   return pending;
 };
+/* Capture before the tracker reads the form, including submits without a prior blur. */
+document.addEventListener('submit', e => {
+  const form = e.target;
+  if (!(form instanceof HTMLFormElement) || !form.matches('[data-lead-form]')) return;
+  const phone = form.elements.phone;
+  const digits = phone.value.replace(/\D/g, '');
+  const local = digits.length === 11 && digits.charAt(0) === '1' ? digits.slice(1) : digits;
+  if (local.length === 10 && /^[2-9]\d{2}[2-9]\d{6}$/.test(local)) {
+    phone.value = '+1' + local;
+    phone.setCustomValidity('');
+  } else {
+    phone.setCustomValidity('Please enter a 10-digit US phone number.');
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    phone.reportValidity();
+    phone.focus();
+  }
+}, true);
 document.querySelectorAll('[data-lead-form]').forEach(form => form.addEventListener('submit', e => {
   e.preventDefault();
   const status = form.querySelector('[role="status"]');
