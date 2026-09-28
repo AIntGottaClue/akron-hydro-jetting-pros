@@ -1,7 +1,10 @@
-# Topeka Hydro Jetting Pros
+# Akron Hydro Jetting Pros
 
-Astro static site. `npm install && npm run build` builds 16 pages into `dist/`; `npm run dev` previews locally. Cloudflare Worker serves the `dist/` static assets configured in `wrangler.jsonc`.
+Astro site for Akron, OH. The sole integration and phone config is `src/data/siteConfig.ts`. GA4 remains a placeholder until the site owner adds a property ID. Build with `npm ci && npm run build`; Cloudflare Workers serves `./dist` per `wrangler.jsonc`. The request form uses AirChatty. Do not submit test leads without the owner’s numbered test plan.
 
-For the affiliate phone number or analytics on this HSP site, edit **only `src/data/siteConfig.ts`**: `phoneDisplay`, `phoneHref` (include country code, omit `tel:`), `ga4MeasurementId`, `airchattyTrackingId`, and site brand/origin. Rebuild and deploy after editing. The placeholder GA4 ID does not collect analytics until replaced.
-
-The original page HTML is preserved in `src/data/pages.json`; Astro renders each route and replaces site-specific placeholders from the one config file. `src/layouts/LegacyPage.astro` owns that replacement. The existing `public/assets/site.js` preserves menu, form-validation, phone normalization, confirmed-success, and tracker integration behavior. No form submission should be used as a deployment smoke test without approval.
+## Copy research
+- https://cms2.revize.com/revize/akronoh/Departments/Planning%20And%20Urban%20Development/Plans%20Reports%20And%20Maps/planning_to_grow_akron_report_final.pdf
+- https://www.akronohio.gov/departments/integrated_development/great_streets/goodyear_heights.php
+- https://www.akronohio.gov/departments/integrated_development/great_streets/firestone_aster_ave.php
+- https://www.akronohio.gov/community/ward_10.php
+- https://www.akronohio.gov/departments/integrated_development/great_streets/north_hill.php
