@@ -4,6 +4,6 @@ export const siteConfig = {
   origin: 'https://akronhydrojetting.prosapp.site',
   phoneDisplay: '(877) 761-0283',
   phoneHref: '+18777610283',
-  ga4MeasurementId: 'G-XXXXXXXXXX',
+  ga4MeasurementId: 'G-NG310VC5ST',
   airchattyTrackingId: 'tk_61d238e145314251999b74fdd5c953cf',
 } as const;
