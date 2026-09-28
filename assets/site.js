@@ -134,3 +134,21 @@ window.fetch = function(url,options) {
   } catch(err) { /* Leave the tracker undisturbed. */ }
   return pending;
 };
+
+/* Hide the floating CTA whenever the form card enters the viewport. */
+(() => {
+  const cta = document.querySelector('.fab-deal');
+  const form = document.querySelector('#deal-form') || document.querySelector('[data-lead-form]')?.parentElement;
+  if (!cta || !form) return;
+  const sync = () => {
+    const rect = form.getBoundingClientRect();
+    cta.style.display = rect.bottom > 0 && rect.top < window.innerHeight && rect.right > 0 && rect.left < window.innerWidth ? 'none' : '';
+  };
+  sync();
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(sync, { threshold: 0 }).observe(form);
+  } else {
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+  }
+})();
