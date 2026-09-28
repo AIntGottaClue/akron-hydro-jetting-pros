@@ -1,11 +1,10 @@
 // Version the stylesheet so new navigation styles replace cached previews.
 const siteStyles = document.querySelector('link[rel="stylesheet"]');
 if (siteStyles) siteStyles.href = siteStyles.href.split('?')[0] + '?nav=20260927-4';
-/* Replace these launch settings before publishing. */
+/* Site settings. */
 window.SITE_CONFIG = {
   phoneDisplay: '(877) 761-0283',
   phoneHref: '+18777610283',
-  formEndpoint: ''
 };
 document.querySelectorAll('[data-phone]').forEach(el => { el.textContent = SITE_CONFIG.phoneDisplay; el.href = 'tel:' + SITE_CONFIG.phoneHref; el.setAttribute('aria-label', 'Call Topeka Hydro Jetting Pros at ' + SITE_CONFIG.phoneDisplay); });
 const menu = document.querySelector('[data-menu-button]');
@@ -43,16 +42,39 @@ menu?.addEventListener('click', () => { const open = nav.classList.toggle('open'
 dropdowns.forEach(dd => { dd.querySelector('button')?.addEventListener('click', () => { const open = !dd.classList.contains('open'); dropdowns.forEach(other => setDropdown(other, other === dd ? open : false)); }); });
 document.addEventListener('click', e => { dropdowns.forEach(dd => { if (!dd.contains(e.target)) setDropdown(dd, false); }); });
 nav?.addEventListener('click', e => { if (e.target.closest('a')) { nav.classList.remove('open'); menu?.setAttribute('aria-expanded', 'false'); } });
-document.querySelectorAll('[data-lead-form]').forEach(form => form.addEventListener('submit', async e => {
+/* Observe the airchatty tracker's delivery POST so the form can show an honest result. */
+let leadDelivered = false;
+let leadFailed = false;
+let leadSubmitSeq = 0;
+function leadDeliveryFailed(status) {
+  if (leadDelivered) return;
+  leadFailed = true;
+  status.textContent = 'Submission attempted. We cannot confirm receipt here. If your request is urgent, please call instead.';
+}
+const nativeLeadFetch = window.fetch.bind(window);
+window.fetch = function (url, options) {
+  const pending = nativeLeadFetch(url, options);
+  try {
+    if (typeof url === 'string' && url.indexOf('backend.leadconnectorhq.com/external-tracking') !== -1) {
+      pending.then(response => {
+        if (response && response.ok) {
+          leadDelivered = true;
+          document.querySelectorAll('[data-lead-form] [role="status"]').forEach(status => { status.textContent = 'Thank you! We received your request and will be in touch soon.'; });
+        } else {
+          document.querySelectorAll('[data-lead-form] [role="status"]').forEach(leadDeliveryFailed);
+        }
+      }).catch(() => { document.querySelectorAll('[data-lead-form] [role="status"]').forEach(leadDeliveryFailed); });
+    }
+  } catch (err) { /* never break the page or the tracker */ }
+  return pending;
+};
+document.querySelectorAll('[data-lead-form]').forEach(form => form.addEventListener('submit', e => {
   e.preventDefault();
   const status = form.querySelector('[role="status"]');
   if (form.elements.website.value) return;
-  if (!SITE_CONFIG.formEndpoint) { status.textContent = 'The online form is not active yet. Please call once the listed number has been updated.'; return; }
-  const button = form.querySelector('button[type="submit"]'); button.disabled = true;
-  try {
-    const response = await fetch(SITE_CONFIG.formEndpoint, {method:'POST', body: new FormData(form), headers:{Accept:'application/json'}});
-    if (!response.ok) throw new Error('Form submission failed');
-    status.textContent = 'Your request was sent.'; form.reset();
-  } catch { status.textContent = 'The request could not be sent. Please call instead.'; }
-  finally { button.disabled = false; }
+  leadDelivered = false;
+  leadFailed = false;
+  const my = ++leadSubmitSeq;
+  status.textContent = 'Submitting...';
+  setTimeout(() => { if (my === leadSubmitSeq && !leadDelivered && !leadFailed) leadDeliveryFailed(status); }, 10000);
 }));
