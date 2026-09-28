@@ -1,1 +1,8 @@
-{"name":"topeka-hydro-jetting-pros","private":true,"version":"1.0.0","scripts":{"build":"rm -rf dist && mkdir dist && cp -R assets college-hill hi-crest highland-park how-hydro-jetting-works hydro-jetting-vs-snaking mineral-and-scale-deposits oakland potwin preventative-maintenance privacy recurring-clogs-and-slow-drains severe-grease-and-sludge terms tree-root-intrusions westboro index.html robots.txt sitemap.xml dist/"}}
+{
+  "name": "topeka-hydro-jetting-pros",
+  "private": true,
+  "type": "module",
+  "version": "2.0.0",
+  "scripts": {"dev":"astro dev","build":"astro build","preview":"astro preview"},
+  "dependencies": {"astro":"^5.13.0"}
+}
