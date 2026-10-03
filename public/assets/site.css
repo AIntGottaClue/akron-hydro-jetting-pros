@@ -13,3 +13,5 @@
 .lead-success h2 {font-size:30px;text-transform:uppercase;margin:0 0 12px;}
 .lead-success p {max-width:30em;margin:0 auto 22px;}
 .lead-success__again {background:none;border:0;font-size:17px;font-weight:700;font-family:inherit;color:inherit;text-decoration:underline;text-underline-offset:5px;cursor:pointer;}
+
+.hero{background:linear-gradient(90deg,rgba(10,28,32,.92) 0%,rgba(10,28,32,.78) 45%,rgba(10,28,32,.35) 100%),url(/assets/img/hero.webp) center/cover no-repeat}.hero-art{display:none}.hero .wrap{grid-template-columns:1fr}.photo{display:block;width:100%;max-width:640px;height:auto;border-radius:10px;margin:0 0 28px}.wrap>.photo:only-child{margin:0 auto}
