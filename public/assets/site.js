@@ -1,7 +1,7 @@
 // Version the stylesheet so new navigation styles replace cached previews.
 const menu = document.querySelector('[data-menu-button]');
 // Keep the existing links and branding; reuse the Fix & Flip three-line toggle and submenu.
-if (menu) { menu.setAttribute('aria-label', 'Toggle menu'); menu.innerHTML = '<span></span><span></span><span></span>'; }
+if (menu) { menu.setAttribute('aria-label', 'Toggle menu'); menu.innerHTML = '<svg class="mobile-menu-hamburger" aria-hidden="true" focusable="false" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg><svg class="mobile-menu-x" aria-hidden="true" focusable="false" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m6 6 12 12M18 6 6 18"/></svg>'; }
 const serviceLinks = [['Severe Grease and Sludge','severe-grease-and-sludge'],['Tree Root Intrusions','tree-root-intrusions'],['Recurring Clogs and Slow Drains','recurring-clogs-and-slow-drains'],['Mineral and Scale Deposits','mineral-and-scale-deposits'],['Preventative Maintenance','preventative-maintenance']];
 const menuNav = document.querySelector('[data-nav]');
 if (menuNav) {
